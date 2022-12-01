@@ -1,0 +1,8 @@
+**jump'n'run, obstacles, 3 lives, collect points (objects) and bonus lives, goal: run as long as possible
+
+**start screen w/ instructions on key(s) used in the game; 
+  character: bunny;
+  collected objects: carrots;
+  up to 19 objects collected;
+  bunny changes colour based on the amount of carrots collected; every 10 carrots
+  if loop for bunny-colours;
