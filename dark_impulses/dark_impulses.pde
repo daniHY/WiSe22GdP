@@ -16,7 +16,7 @@ int START=1, PLAY=2, LOSE=3, WIN=4;
 int STATES=START;
 int dx = 0, dx2 = 1000; // x coordinates for the day background
 
-int oypo, oxpo, oxpo2;//obstacles coodinates
+int oypo, oxpo, oxpo2, oxpo3;//obstacles coodinates
 int speed=2;
 
 int bxpo, bypo;//bunny's x&y coodinates
@@ -38,7 +38,7 @@ void setup() {
   ebunny = loadImage("ebunny.png");
   ebunny.resize(200, 200);
   obstacle = loadImage("obstacle.png");
-  //obstacle.resize(500, 500);
+  obstacle.resize(500, 500);
   obstacle2 = loadImage("obstacle2.png");
   obstacle2.resize(500, 500);
   carrot = loadImage("carrot.png");
@@ -54,10 +54,12 @@ void draw() {
   if (STATES==PLAY) {
     backg();
     obs();
-    
-    image(bunny, bxpo, bypo,bunny.width,bunny.height);
-    
+
+    image(bunny, bxpo, bypo, bunny.width, bunny.height);
+
     bunnymov();
+    collide();
+ 
   }
 
 
@@ -86,30 +88,22 @@ void backg() {
 
 void obs() {
 
-  image(obstacle, oxpo, 52);
+  image(obstacle, oxpo, 160);
   oxpo-=speed;
 
-  
-  if (oxpo<randompo&&oxpo2>0-obstacle.width) {
 
-    image(obstacle, oxpo2, 52);
+  if (oxpo<=width*0.25) {
+
+    image(obstacle, oxpo2, 160);
     oxpo2-=speed;
   }
-  //reset obstacles position(infinte obstacles)
-  if (oxpo<=0-obstacle.width) {
-    oxpo=width;
-    newob=true;
-  }
-    
-  else if (oxpo2<=0-obstacle.width){
-    oxpo2=width;
 
+
+  //reset obstacles position(infinte obstacles)
+  if (oxpo<=0-obstacle.width&&oxpo2<=0-obstacle.width) {
+    oxpo2=width;
+    oxpo=width;
   }
-  if (newob==true){
-  randompo=int(random(width));
-  newob=false;
-}
-println(randompo);
 }
 
 
@@ -120,12 +114,18 @@ void bunnymov() {
     bypo+=8;
     jump=false;
   }
-  
 }
 
 
 
 void collide() {
+  if (bxpo==oxpo||bxpo==oxpo2) {
+    if (bypo+bunny.height/2>278) {
+      println("contacted");
+      bxpo-=speed;
+    }
+    
+  }
 }
 
 
@@ -133,10 +133,12 @@ void gameover_screen() {
 }
 
 void keyPressed() {
+  //reset all numbers when start the game
   if (keyCode == ENTER&&STATES==START) {
     STATES=PLAY;
     oxpo=width;
     oxpo2=width;
+    oxpo3=width;
     oypo=52;
     bypo=278;
     bxpo=70;
