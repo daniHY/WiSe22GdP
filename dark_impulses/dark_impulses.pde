@@ -59,7 +59,6 @@ void draw() {
 
     bunnymov();
     collide();
- 
   }
 
 
@@ -69,6 +68,10 @@ void draw() {
     stroke(225);
     textSize(25);
     text ("Press ENTER to start", 50, 50);
+  } else if (STATES==LOSE) {
+    
+  } else if (STATES==WIN) {
+    
   }
 }
 
@@ -119,12 +122,12 @@ void bunnymov() {
 
 
 void collide() {
+  //collidtion between bunny and obstacles
   if (bxpo==oxpo||bxpo==oxpo2) {
     if (bypo+bunny.height/2>278) {
       println("contacted");
       bxpo-=speed;
     }
-    
   }
 }
 
