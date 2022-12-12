@@ -162,6 +162,6 @@ void carr() {
   if (millis()-initialTime>interval) {
     time = nf(int(millis()/1000),3);
     initialTime=millis();
-    image(carrot,10,10);
+    image(carrot,random(width),random(height));
   }
 }
