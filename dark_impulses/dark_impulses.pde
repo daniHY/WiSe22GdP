@@ -16,12 +16,13 @@ int START=1, PLAY=2, LOSE=3, WIN=4;
 int STATES=START;
 int dx = 0, dx2 = 1000; // x coordinates for the day background
 
-int oypo, oxpo;//obstacles positions
+int oypo, oxpo, oxpo2;//obstacles coodinates
 int speed=2;
-int select;
 
-int bxpo, bypo;
+int bxpo, bypo;//bunny's x&y coodinates
 boolean jump=false;
+boolean newob=false;
+int randompo;
 
 void setup() {
   size(1000, 500);
@@ -53,7 +54,9 @@ void draw() {
   if (STATES==PLAY) {
     backg();
     obs();
-    image(bunny, bxpo, bypo);
+    
+    image(bunny, bxpo, bypo,bunny.width,bunny.height);
+    
     bunnymov();
   }
 
@@ -83,41 +86,46 @@ void backg() {
 
 void obs() {
 
-  // endless obstacles
   image(obstacle, oxpo, 52);
   oxpo-=speed;
 
-  if (oxpo<0-obstacle.width) {
-    select=int(random(3));
+  
+  if (oxpo<randompo&&oxpo2>0-obstacle.width) {
+
+    image(obstacle, oxpo2, 52);
+    oxpo2-=speed;
   }
-  if (select==1) {
+  //reset obstacles position(infinte obstacles)
+  if (oxpo<=0-obstacle.width) {
     oxpo=width;
-    image(obstacle, oxpo, oypo);
-    oxpo-=speed;
-  } else if (select==2 ) {
-    oxpo=width;
-    image(obstacle2, oxpo, oypo);
-    oxpo-=speed;
+    newob=true;
   }
-  println(bypo);
+    
+  else if (oxpo2<=0-obstacle.width){
+    oxpo2=width;
+
+  }
+  if (newob==true){
+  randompo=int(random(width));
+  newob=false;
+}
+println(randompo);
 }
 
 
 void bunnymov() {
   if (jump==true&&bypo>50) {
     bypo-=8;
-    
-  }
-  else if(bypo==58||bypo!=278) {
+  } else if (bypo==58||bypo!=278) {
     bypo+=8;
     jump=false;
   }
+  
 }
 
 
 
 void collide() {
-  
 }
 
 
@@ -128,11 +136,12 @@ void keyPressed() {
   if (keyCode == ENTER&&STATES==START) {
     STATES=PLAY;
     oxpo=width;
+    oxpo2=width;
     oypo=52;
     bypo=278;
     bxpo=70;
   }
   if (keyCode==UP) jump=true;
   if (keyCode==LEFT) bxpo-=15;
-  if(keyCode==RIGHT) bxpo+=15;
+  if (keyCode==RIGHT) bxpo+=15;
 }
