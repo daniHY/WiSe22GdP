@@ -46,7 +46,7 @@ void setup() {
   obstacle2 = loadImage("obstacle2.png");
   obstacle2.resize(500, 500);
   carrot = loadImage("carrot.png");
-  carrot.resize(50,50);
+  carrot.resize(100,100);
   heart = loadImage("heart.png");
   gameover = loadImage("gameover.png");
   again = loadImage("again.png");
