@@ -26,6 +26,7 @@ int randompo;
 String time;
 int initialTime;
 int interval=5000; //five seconds
+int carrotCounter = 0; //counts collected carrots
 
 void setup() {
   size(1000, 500);
@@ -45,6 +46,7 @@ void setup() {
   obstacle2 = loadImage("obstacle2.png");
   obstacle2.resize(500, 500);
   carrot = loadImage("carrot.png");
+  carrot.resize(50,50);
   heart = loadImage("heart.png");
   gameover = loadImage("gameover.png");
   again = loadImage("again.png");
@@ -60,11 +62,13 @@ void draw() {
   if (STATES==PLAY) {
     backg();
     obs();
+    carr();
 
     image(bunny, bxpo, bypo, bunny.width, bunny.height);
 
     bunnymov();
     collide();
+    carrCount();
   }
 
 
@@ -164,4 +168,8 @@ void carr() {
     initialTime=millis();
     image(carrot,random(width),random(height));
   }
+}
+
+void carrCount() {
+  text("Carrots collected: " + carrotCounter,15,30);
 }
