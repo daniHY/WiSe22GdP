@@ -78,6 +78,7 @@ void draw() {
     stroke(225);
     textSize(25);
     text ("Press ENTER to start", 50, 50);
+    
   } else if (STATES==LOSE) {
     
   } else if (STATES==WIN) {
@@ -141,8 +142,8 @@ void collide() {
   }
 }
 
-
 void gameover_screen() {
+  
 }
 
 void keyPressed() {
