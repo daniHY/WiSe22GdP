@@ -23,6 +23,9 @@ int bxpo, bypo;//bunny's x&y coodinates
 boolean jump=false;
 boolean newob=false;
 int randompo;
+String time;
+int initialTime;
+int interval=5000; //five seconds
 
 void setup() {
   size(1000, 500);
@@ -48,6 +51,9 @@ void setup() {
   yes = loadImage("yes.png");
   no = loadImage("no.png");
   oxpo=width;
+  
+  //set timer for carrots
+  initialTime=millis();
 }
 
 void draw() {
@@ -149,4 +155,13 @@ void keyPressed() {
   if (keyCode==UP) jump=true;
   if (keyCode==LEFT) bxpo-=15;
   if (keyCode==RIGHT) bxpo+=15;
+}
+
+void carr() {
+  //carrot spawns randomly
+  if (millis()-initialTime>interval) {
+    time = nf(int(millis()/1000),3);
+    initialTime=millis();
+    image(carrot,10,10);
+  }
 }
