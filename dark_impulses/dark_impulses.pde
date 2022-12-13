@@ -37,23 +37,19 @@ void setup() {
   daybg.resize(1000, 500);
   nightbg = loadImage("nightbg.jpg");
   nightbg.resize(1000, 500);
-  bunny = loadImage("bunny.png");
-  bunny.resize(200, 200);
+  bunny = loadImage("bunny1.png");
   ebunny = loadImage("ebunny.png");
   ebunny.resize(200, 200);
-  obstacle = loadImage("obstacle.png");
-  obstacle.resize(500, 500);
-  obstacle2 = loadImage("obstacle2.png");
-  obstacle2.resize(500, 500);
-  carrot = loadImage("carrot.png");
-  carrot.resize(100,100);
+  obstacle = loadImage("obstacle1.png");
+  obstacle2 = loadImage("obstacle3.png");
+  carrot = loadImage("carrot1.png");
   heart = loadImage("heart.png");
   gameover = loadImage("gameover.png");
   again = loadImage("again.png");
   yes = loadImage("yes.png");
   no = loadImage("no.png");
   oxpo=width;
-  
+
   //set timer for carrots
   initialTime=millis();
 }
@@ -69,6 +65,7 @@ void draw() {
     bunnymov();
     collide();
     carrCount();
+    println(oxpo,oxpo2);
   }
 
 
@@ -78,11 +75,8 @@ void draw() {
     stroke(225);
     textSize(25);
     text ("Press ENTER to start", 50, 50);
-    
   } else if (STATES==LOSE) {
-    
   } else if (STATES==WIN) {
-    
   }
 }
 
@@ -102,13 +96,13 @@ void backg() {
 
 void obs() {
 
-  image(obstacle, oxpo, 160);
+  image(obstacle, oxpo, oypo);
   oxpo-=speed;
 
 
   if (oxpo<=width*0.25) {
 
-    image(obstacle, oxpo2, 160);
+    image(obstacle, oxpo2, oypo);
     oxpo2-=speed;
   }
 
@@ -124,7 +118,7 @@ void obs() {
 void bunnymov() {
   if (jump==true&&bypo>50) {
     bypo-=8;
-  } else if (bypo==58||bypo!=278) {
+  } else if (bypo==58||bypo!=295) {
     bypo+=8;
     jump=false;
   }
@@ -134,16 +128,25 @@ void bunnymov() {
 
 void collide() {
   //collidtion between bunny and obstacles
-  if (bxpo==oxpo||bxpo==oxpo2) {
-    if (bypo+bunny.height/2>278) {
-      println("contacted");
+  float bunnyr=bxpo+bunny.width/2;
+  float bunnyl=bxpo-bunny.width/2;
+  float bunnyb=bypo+bunny.height/2;
+  float obr=oxpo+obstacle.width/2,obr2=oxpo2+obstacle.width/2;
+  float obl=oxpo-obstacle.width/2,obl2=oxpo2-obstacle.width/2;
+  float obt=oypo-obstacle.height/2;
+  
+  if (bxpo+bunny.width/2==oxpo-obstacle.width/2 || bxpo+bunny.width/2==oxpo2-obstacle.width/2) {
+    if (bypo+bunny.height/2>=oypo-obstacle.height/2) {
       bxpo-=speed;
     }
-  }
+  }  /*if (bxpo+bunny.width/2>oxpo-obstacle.width/2 &&bxpo+bunny.width/2<oxpo+obstacle.width/2) {
+    if (bypo+bunny.height/2==oypo-obstacle.height/2) {
+      bypo=oypo-obstacle.height/2+bunny.height/2;
+    }
+  }*/
 }
 
 void gameover_screen() {
-  
 }
 
 void keyPressed() {
@@ -153,8 +156,8 @@ void keyPressed() {
     oxpo=width;
     oxpo2=width;
     oxpo3=width;
-    oypo=52;
-    bypo=278;
+    oypo=285;
+    bypo=295;
     bxpo=70;
   }
   if (keyCode==UP) jump=true;
@@ -165,12 +168,12 @@ void keyPressed() {
 void carr() {
   //carrot spawns randomly
   if (millis()-initialTime>interval) {
-    time = nf(int(millis()/1000),3);
+    time = nf(int(millis()/1000), 3);
     initialTime=millis();
-    image(carrot,random(width),random(height));
+    image(carrot, random(width), random(height));
   }
 }
 
 void carrCount() {
-  text("Carrots collected: " + carrotCounter,15,30);
+  text("Carrots collected: " + carrotCounter, 15, 30);
 }
