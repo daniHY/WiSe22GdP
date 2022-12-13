@@ -28,6 +28,8 @@ int initialTime;
 int interval=5000; //five seconds
 int carrotCounter = 0; //counts collected carrots
 
+int life=3;
+
 void setup() {
   size(1000, 500);
   //load all images
@@ -43,7 +45,7 @@ void setup() {
   obstacle = loadImage("obstacle1.png");
   obstacle2 = loadImage("obstacle3.png");
   carrot = loadImage("carrot1.png");
-  heart = loadImage("heart.png");
+  heart = loadImage("heart1.png");
   gameover = loadImage("gameover.png");
   again = loadImage("again.png");
   yes = loadImage("yes.png");
@@ -59,24 +61,33 @@ void draw() {
     backg();
     obs();
     carr();
-
     image(bunny, bxpo, bypo, bunny.width, bunny.height);
-
     bunnymov();
     collide();
     carrCount();
-    println(oxpo,oxpo2);
-  }
+    println(oxpo, oxpo2);
+    /*if (life==3) {
+      for (int i=0; i<3; i++) {
+        int hxpo=30;
+        image(heart, hxpo, 30);
+        hxpo+=50;
+      }
+    }*/
 
 
-  // creating a welcome screen, starts if ENTER is pressed
-  if (STATES==START) {
-    image(startScreen, 0, 0);
-    stroke(225);
-    textSize(25);
-    text ("Press ENTER to start", 50, 50);
-  } else if (STATES==LOSE) {
-  } else if (STATES==WIN) {
+
+    // creating a welcome screen, starts if ENTER is pressed
+    if (STATES==START) {
+      background(0);
+      image(startScreen, 0, 0);
+      stroke(225);
+      textSize(25);
+      text ("Press ENTER to start", 50, 50);
+    } else if (STATES==LOSE) {
+      
+    } else if (STATES==WIN) {
+      
+    }
   }
 }
 
@@ -131,23 +142,28 @@ void collide() {
   float bunnyr=bxpo+bunny.width/2;
   float bunnyl=bxpo-bunny.width/2;
   float bunnyb=bypo+bunny.height/2;
-  float obr=oxpo+obstacle.width/2,obr2=oxpo2+obstacle.width/2;
-  float obl=oxpo-obstacle.width/2,obl2=oxpo2-obstacle.width/2;
+  float obr=oxpo+obstacle.width/2, obr2=oxpo2+obstacle.width/2;
+  float obl=oxpo-obstacle.width/2, obl2=oxpo2-obstacle.width/2;
   float obt=oypo-obstacle.height/2;
-  
-  if (bxpo+bunny.width/2==oxpo-obstacle.width/2 || bxpo+bunny.width/2==oxpo2-obstacle.width/2) {
-    if (bypo+bunny.height/2>=oypo-obstacle.height/2) {
+
+  if (bunnyr>=obl && bunnyl<=obr) {
+    if (bunnyb>=obt) {
       bxpo-=speed;
     }
-  }  /*if (bxpo+bunny.width/2>oxpo-obstacle.width/2 &&bxpo+bunny.width/2<oxpo+obstacle.width/2) {
-    if (bypo+bunny.height/2==oypo-obstacle.height/2) {
-      bypo=oypo-obstacle.height/2+bunny.height/2;
+  }
+  if (bunnyr>=obl2 && bunnyl<=obr2) {
+    if (bunnyb>=obt) {
+      bxpo-=speed;
     }
-  }*/
+  }
+  //if bunny runs out of the screen player loses 1 life
+  if (bunnyr<0) {
+    life-=1;
+    bxpo=70;
+  }
+  if (life==0) STATES=LOSE;
 }
 
-void gameover_screen() {
-}
 
 void keyPressed() {
   //reset all numbers when start the game
@@ -159,7 +175,9 @@ void keyPressed() {
     oypo=285;
     bypo=295;
     bxpo=70;
+    life=3;
   }
+  //bunny
   if (keyCode==UP) jump=true;
   if (keyCode==LEFT) bxpo-=15;
   if (keyCode==RIGHT) bxpo+=15;
