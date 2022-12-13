@@ -3,17 +3,12 @@
 
 PImage startScreen; // welcome screen
 PImage daybg; // day background
-PImage nightbg; //night background switches when bunny becomes evil
 PImage bunny; // main character
-PImage ebunny; // main character´s dark side because he ate too much carrots
 PImage obstacle;
-PImage obstacle2;
 PImage carrot;
 PImage heart; // showing how many lives you have
 PImage gameover;
 PImage again;
-PImage yes;
-PImage no;
 
 int START=1, PLAY=2, LOSE=3, WIN=4;
 int STATES=START;
@@ -30,6 +25,7 @@ String time;
 int initialTime;
 int interval=5000; //five seconds
 int carrotCounter = 0; //counts collected carrots
+boolean instr=false; //hide instruction screen
 
 int life=3;
 boolean showins=false;
@@ -45,19 +41,12 @@ void setup() {
   startScreen.resize(1000, 500);
   daybg = loadImage("daybg.jpg");
   daybg.resize(1000, 500);
-  nightbg = loadImage("nightbg.jpg");
-  nightbg.resize(1000, 500);
   bunny = loadImage("bunny1.png");
-  ebunny = loadImage("ebunny.png");
-  ebunny.resize(200, 200);
   obstacle = loadImage("obstacle1.png");
-  obstacle2 = loadImage("obstacle3.png");
   carrot = loadImage("carrot1.png");
   heart = loadImage("heart1.png");
   gameover = loadImage("gameover.png");
   again = loadImage("again.png");
-  yes = loadImage("yes.png");
-  no = loadImage("no.png");
   oxpo=width;
 
   //set timer for carrots
@@ -77,6 +66,22 @@ void draw() {
       text("open", width/2, height/2);
     } else if (showins==false) {
       text("close", width/2, height/2);
+    }
+    //show/hide instructions
+    if (keyCode==ALT&&instr==false) {
+      instr=true;
+      background(0);
+      image(daybg, 0, 0);
+      stroke(225);
+      textSize(25);
+      text("PRESS TAB TO CLOSE INSTRUCTIONS", 50, 50);
+      text("GAME INSTRUCTIONS", 80, 250);
+      text("To jump: press 'UP'", 80, 300);
+      text("To move forward: press 'RIGHT ARROW KEY'", 80, 350);
+      text("To move backwards: press 'LEFT ARROW KEY'", 80, 400);
+    } 
+     if (keyCode==TAB&&instr==true) {
+      instr=false;
     }
   } else if (STATES==LOSE) {
     image(gameover, 50, 0);
