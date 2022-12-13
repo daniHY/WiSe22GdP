@@ -1,3 +1,6 @@
+
+
+
 PImage startScreen; // welcome screen
 PImage daybg; // day background
 PImage nightbg; //night background switches when bunny becomes evil
@@ -171,7 +174,7 @@ void collide() {
     bxpo=70;
   }
   if (life==0) STATES=LOSE;
-
+//carrot and bunny collidsion
   float carrl=carrxpo-carrot.width/2;
   float carrr=carrxpo+carrot.width/2;
   float carrb=carrypo+carrot.height/2;
@@ -207,15 +210,15 @@ void keyPressed() {
   if (keyCode==UP) jump=true;
   if (keyCode==LEFT) bxpo-=15;
   if (keyCode==RIGHT) bxpo+=15;
-
+//quick exit by pressing esc
   if (keyCode==ESC&&STATES==PLAY) STATES=START;
 }
 
 void carr() {
-  //carrot spawns
+  
   int s=second();
 
-
+//carrot spawns every 2 sec
   if (s%2==0) {
     carrshow=true;
     println(1);
