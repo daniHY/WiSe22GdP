@@ -27,6 +27,7 @@ String time;
 int initialTime;
 int interval=5000; //five seconds
 int carrotCounter = 0; //counts collected carrots
+boolean instr=false; //hide instruction screen
 
 int life=3;
 boolean showins=false;
@@ -74,6 +75,22 @@ void draw() {
       text("open", width/2, height/2);
     } else if (showins==false) {
       text("close", width/2, height/2);
+    }
+    //show/hide instructions
+    if (keyCode==ALT&&instr==false) {
+      instr=true;
+      background(0);
+      image(daybg, 0, 0);
+      stroke(225);
+      textSize(25);
+      text("PRESS TAB TO CLOSE INSTRUCTIONS", 50, 50);
+      text("GAME INSTRUCTIONS", 80, 250);
+      text("To jump: press 'UP'", 80, 300);
+      text("To move forward: press 'RIGHT ARROW KEY'", 80, 350);
+      text("To move backwards: press 'LEFT ARROW KEY'", 80, 400);
+    } 
+     if (keyCode==TAB&&instr==true) {
+      instr=false;
     }
   } else if (STATES==LOSE) {
     image(gameover, 50, 0);
