@@ -57,7 +57,19 @@ void setup() {
 }
 
 void draw() {
-  if (STATES==PLAY) {
+  // creating a welcome screen, starts if ENTER is pressed
+  if (STATES==START) {
+    background(0);
+    image(startScreen, 0, 0);
+    stroke(225);
+    textSize(25);
+    text ("Press ENTER to start", 50, 50);
+  } else if (STATES==LOSE) { 
+    image(gameover,50,0);
+    image(again,50,100);
+    text("ENTER  TO CONTINUE ",width/2,400);
+  } else if (STATES==WIN) {
+  } else if (STATES==PLAY) {
     backg();
     obs();
     carr();
@@ -66,28 +78,21 @@ void draw() {
     collide();
     carrCount();
     println(oxpo, oxpo2);
-    /*if (life==3) {
+    //life number display
+    if (life==3) {
       for (int i=0; i<3; i++) {
-        int hxpo=30;
+        int hxpo=30+i*50;
         image(heart, hxpo, 30);
-        hxpo+=50;
       }
-    }*/
-
-
-
-    // creating a welcome screen, starts if ENTER is pressed
-    if (STATES==START) {
-      background(0);
-      image(startScreen, 0, 0);
-      stroke(225);
-      textSize(25);
-      text ("Press ENTER to start", 50, 50);
-    } else if (STATES==LOSE) {
-      
-    } else if (STATES==WIN) {
-      
-    }
+    } else if (life==2) {
+      for (int i=0; i<2; i++) {
+        int hxpo=30+i*50;
+        image(heart, hxpo, 30);
+      }
+    } else  if (life==1) {
+      int hxpo=30;
+      image(heart, hxpo, 30);
+    } 
   }
 }
 
@@ -177,6 +182,9 @@ void keyPressed() {
     bxpo=70;
     life=3;
   }
+  if(keyCode==ENTER&&STATES==LOSE)
+    STATES=START;
+  
   //bunny
   if (keyCode==UP) jump=true;
   if (keyCode==LEFT) bxpo-=15;
@@ -193,5 +201,5 @@ void carr() {
 }
 
 void carrCount() {
-  text("Carrots collected: " + carrotCounter, 15, 30);
+  text("Carrots collected: " + carrotCounter, width-250, 30);
 }
