@@ -1,16 +1,11 @@
 PImage startScreen; // welcome screen
 PImage daybg; // day background
-PImage nightbg; //night background switches when bunny becomes evil
 PImage bunny; // main character
-PImage ebunny; // main character´s dark side because he ate too much carrots
 PImage obstacle;
-PImage obstacle2;
 PImage carrot;
 PImage heart; // showing how many lives you have
 PImage gameover;
 PImage again;
-PImage yes;
-PImage no;
 
 int START=1, PLAY=2, LOSE=3, WIN=4;
 int STATES=START;
@@ -43,19 +38,12 @@ void setup() {
   startScreen.resize(1000, 500);
   daybg = loadImage("daybg.jpg");
   daybg.resize(1000, 500);
-  nightbg = loadImage("nightbg.jpg");
-  nightbg.resize(1000, 500);
   bunny = loadImage("bunny1.png");
-  ebunny = loadImage("ebunny.png");
-  ebunny.resize(200, 200);
   obstacle = loadImage("obstacle1.png");
-  obstacle2 = loadImage("obstacle3.png");
   carrot = loadImage("carrot1.png");
   heart = loadImage("heart1.png");
   gameover = loadImage("gameover.png");
   again = loadImage("again.png");
-  yes = loadImage("yes.png");
-  no = loadImage("no.png");
   oxpo=width;
 
   //set timer for carrots
