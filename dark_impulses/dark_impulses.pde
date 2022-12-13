@@ -29,6 +29,11 @@ int interval=5000; //five seconds
 int carrotCounter = 0; //counts collected carrots
 
 int life=3;
+boolean showins=false;
+int carrxpo=width;
+int carrypo=height/2;
+boolean carrshow=false;
+
 
 void setup() {
   size(1000, 500);
@@ -64,10 +69,16 @@ void draw() {
     stroke(225);
     textSize(25);
     text ("Press ENTER to start", 50, 50);
-  } else if (STATES==LOSE) { 
-    image(gameover,50,0);
-    image(again,50,100);
-    text("ENTER  TO CONTINUE ",width/2,400);
+    text("PRESS SPACE FOR INSTRUCTION", width/2, 400);
+    if (showins==true) {
+      text("open", width/2, height/2);
+    } else if (showins==false) {
+      text("close", width/2, height/2);
+    }
+  } else if (STATES==LOSE) {
+    image(gameover, 50, 0);
+    image(again, 50, 100);
+    text("ENTER  TO CONTINUE ", width/2, 400);
   } else if (STATES==WIN) {
   } else if (STATES==PLAY) {
     backg();
@@ -92,7 +103,7 @@ void draw() {
     } else  if (life==1) {
       int hxpo=30;
       image(heart, hxpo, 30);
-    } 
+    }
   }
 }
 
@@ -109,19 +120,16 @@ void backg() {
     dx2 = 1000;
   }
 }
-
+//display obstacles
 void obs() {
 
   image(obstacle, oxpo, oypo);
   oxpo-=speed;
 
-
   if (oxpo<=width*0.25) {
-
     image(obstacle, oxpo2, oypo);
     oxpo2-=speed;
   }
-
 
   //reset obstacles position(infinte obstacles)
   if (oxpo<=0-obstacle.width&&oxpo2<=0-obstacle.width) {
@@ -141,32 +149,38 @@ void bunnymov() {
 }
 
 
-
 void collide() {
   //collidtion between bunny and obstacles
   float bunnyr=bxpo+bunny.width/2;
   float bunnyl=bxpo-bunny.width/2;
   float bunnyb=bypo+bunny.height/2;
+  float bunnyt=bypo-bunny.height/2;
   float obr=oxpo+obstacle.width/2, obr2=oxpo2+obstacle.width/2;
   float obl=oxpo-obstacle.width/2, obl2=oxpo2-obstacle.width/2;
   float obt=oypo-obstacle.height/2;
 
   if (bunnyr>=obl && bunnyl<=obr) {
-    if (bunnyb>=obt) {
-      bxpo-=speed;
-    }
+    if (bunnyb>=obt) bxpo-=speed;
   }
   if (bunnyr>=obl2 && bunnyl<=obr2) {
-    if (bunnyb>=obt) {
-      bxpo-=speed;
-    }
+    if (bunnyb>=obt) bxpo-=speed;
   }
-  //if bunny runs out of the screen player loses 1 life
+  //if bunny is outside of the screen player loses 1 life
   if (bunnyr<0) {
     life-=1;
     bxpo=70;
   }
   if (life==0) STATES=LOSE;
+
+  float carrl=carrxpo-carrot.width/2;
+  float carrr=carrxpo+carrot.width/2;
+  float carrb=carrypo+carrot.height/2;
+  if (bunnyr>=carrl&&bunnyl<=carrr) {
+    if (bunnyt<=carrb) {
+      carrotCounter+=1;
+      carrshow=false;
+    }
+  }
 }
 
 
@@ -181,24 +195,42 @@ void keyPressed() {
     bypo=295;
     bxpo=70;
     life=3;
+    carrxpo=width;
+    carrotCounter=0;
   }
-  if(keyCode==ENTER&&STATES==LOSE)
-    STATES=START;
-  
-  //bunny
+  if (keyCode==SHIFT&&STATES==START&&showins==false) showins=true;
+  if (keyCode==SHIFT&&STATES==START&&showins==true) showins=false;
+
+  if (keyCode==ENTER&&STATES==LOSE)STATES=START;
+
+  //bunny movement controll
   if (keyCode==UP) jump=true;
   if (keyCode==LEFT) bxpo-=15;
   if (keyCode==RIGHT) bxpo+=15;
+
+  if (keyCode==ESC&&STATES==PLAY) STATES=START;
 }
 
 void carr() {
-  //carrot spawns randomly
-  if (millis()-initialTime>interval) {
-    time = nf(int(millis()/1000), 3);
-    initialTime=millis();
-    image(carrot, random(width), random(height));
+  //carrot spawns
+  int s=second();
+
+
+  if (s%2==0) {
+    carrshow=true;
+    println(1);
+  }
+  if (carrshow==true) {
+
+    image(carrot, carrxpo, carrypo);
+    carrxpo-=speed;
+  }
+  if (carrxpo+carrot.width/2<0) {
+    carrshow=false;
+    carrxpo=width;
   }
 }
+
 
 void carrCount() {
   text("Carrots collected: " + carrotCounter, width-250, 30);
